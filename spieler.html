@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spieler verwalten</title>
+<style>
+body{font-family:Arial;background:#f6f7f9;margin:12px}h1{text-align:center}.box{background:#fff;border:1px solid #ddd;border-radius:10px;padding:12px;margin-bottom:12px}input,button{box-sizing:border-box;width:100%;padding:12px;margin:6px 0;font-size:16px}button{background:#222;color:#fff;border:0;border-radius:8px}.status{text-align:center;font-weight:bold;padding:10px}
+</style>
+</head>
+<body>
+<h1>Spieler verwalten</h1>
+<div class="status" id="status">Bereit</div>
+<div class="box">
+<h3>Spieler hinzufügen</h3>
+<input id="codeAdd" placeholder="Code">
+<input id="nameAdd" placeholder="Spielername">
+<input id="nrAdd" placeholder="Rückennummer" type="number" min="1" max="99">
+<button onclick="addPlayer()">Hinzufügen</button>
+</div>
+<div class="box">
+<h3>Spieler löschen</h3>
+<input id="codeDel" placeholder="Code">
+<input id="nameDel" placeholder="Spielername exakt">
+<button onclick="deletePlayer()">Löschen</button>
+</div>
+<button onclick="location.href='index.html'">Zurück zur Übersicht</button>
+<script>
+const API_URL='https://script.google.com/macros/s/AKfycbytXhWsaJgviOX_TMJKqefWSO99I6LE0pXnr48jJrXYJdD85yDrWqe2714NqED40C5j/exec';
+function status(t){document.getElementById('status').innerText=t}
+async function post(data){const r=await fetch(API_URL,{method:'POST',body:JSON.stringify(data)});return await r.json()}
+async function addPlayer(){const code=document.getElementById('codeAdd').value.trim();const spieler=document.getElementById('nameAdd').value.trim();const nummer=document.getElementById('nrAdd').value.trim();if(!code||!spieler||!nummer){alert('Bitte alles ausfüllen');return}status('Speichern...');const res=await post({action:'addPlayer',code,spieler,nummer});status(res.success?'Spieler hinzugefügt ✔':'Fehler: '+res.error)}
+async function deletePlayer(){const code=document.getElementById('codeDel').value.trim();const spieler=document.getElementById('nameDel').value.trim();if(!code||!spieler){alert('Bitte alles ausfüllen');return}if(!confirm(spieler+' wirklich löschen?'))return;status('Löschen...');const res=await post({action:'deletePlayer',code,spieler});status(res.success?'Spieler gelöscht ✔':'Fehler: '+res.error)}
+</script>
+</body>
+</html>
