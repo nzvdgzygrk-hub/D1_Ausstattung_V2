@@ -1,0 +1,16 @@
+{
+  "name": "Spieler verwalten",
+  "short_name": "⚽ Spieler",
+  "start_url": "spieler.html",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#222222",
+  "icons": [
+    {
+      "src": "fussball-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
