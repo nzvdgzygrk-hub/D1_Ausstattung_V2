@@ -82,6 +82,21 @@ background:#ffb3b3;
 border:2px solid #d60000;
 }
 
+.tw-row{
+background:#fff7df;
+}
+
+.tw-badge{
+display:inline-block;
+margin-left:6px;
+padding:2px 6px;
+border-radius:999px;
+background:#111827;
+color:#fff;
+font-size:11px;
+font-weight:bold;
+}
+
 .footer{
 text-align:center;
 font-size:12px;
@@ -137,6 +152,13 @@ margin-top:20px;
 
 const API_URL="https://script.google.com/macros/s/AKfycbytXhWsaJgviOX_TMJKqefWSO99I6LE0pXnr48jJrXYJdD85yDrWqe2714NqED40C5j/exec";
 
+/* Torhüter: Trikot-Oberteil und Trikot-Hose müssen separat exportiert werden */
+const goalkeepers=["Paul B.","Noel","Benjamin"];
+
+function isGoalkeeper(name){
+return goalkeepers.includes(name);
+}
+
 /* FIX: feste stabile Spielerliste */
 const players=[
 {n:"Paul B.",nr:1},
@@ -186,9 +208,10 @@ return !hasDuplicate;
 }
 
 function row(p){
+const tw=isGoalkeeper(p.n);
 return `
-<tr data-name="${p.n}">
-<td>${p.n}</td>
+<tr data-name="${p.n}" class="${tw?'tw-row':''}">
+<td>${p.n}${tw?'<span class="tw-badge">TW</span>':''}</td>
 <td>
 <select class="nr" onchange="checkNumbers()">
 ${Array.from({length:99},(_,i)=>`<option ${i+1==p.nr?'selected':''}>${i+1}</option>`).join("")}
@@ -293,15 +316,24 @@ setStatus("Fehler beim Speichern ❌");
 }
 
 /* EXPORT */
-function gruppieren(sel){
+function gruppieren(sel, filterFn=()=>true){
 const m={};
 document.querySelectorAll("tbody tr").forEach(r=>{
+if(!filterFn(r)) return;
 const v=r.querySelector(sel).value;
 if(!v) return;
 if(!m[v]) m[v]=[];
 m[v].push(r.querySelector(".nr").value);
 });
 return m;
+}
+
+function isTwRow(r){
+return isGoalkeeper(r.dataset.name);
+}
+
+function isFieldRow(r){
+return !isGoalkeeper(r.dataset.name);
 }
 
 function format(title,data){
@@ -338,7 +370,21 @@ alert("kopiert");
 }
 
 function exportTrikots(){
-copy("TRIKOT OBERTEIL\n\n"+format("Oberteil",gruppieren(".o"))+"\n\nTRIKOT HOSE\n\n"+formatOhneNummern("Hose",gruppieren(".h")));
+const feldOberteil=gruppieren(".o",isFieldRow);
+const twOberteil=gruppieren(".o",isTwRow);
+const feldHose=gruppieren(".h",isFieldRow);
+const twHose=gruppieren(".h",isTwRow);
+
+copy(
+"FELDSPIELER TRIKOT OBERTEIL\n\n"+
+format("Oberteil",feldOberteil)+
+"\n\nTORWART TRIKOT OBERTEIL\n\n"+
+format("TW Oberteil",twOberteil)+
+"\n\nFELDSPIELER TRIKOT HOSE\n\n"+
+formatOhneNummern("Hose",feldHose)+
+"\n\nTORWART TRIKOT HOSE\n\n"+
+formatOhneNummern("TW Hose",twHose)
+);
 }
 
 function exportPraes(){
