@@ -4,401 +4,50 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Bestellübersicht Saison 2026/27</title>
-
 <style>
-body{font-family:Arial;margin:10px;background:#f6f7f9}
-h1{text-align:center}
-
-.status{
-padding:10px;
-background:#fff;
-border:1px solid #ddd;
-border-radius:8px;
-text-align:center;
-margin-bottom:10px;
-font-weight:bold;
-}
-
-.warning{
-display:none;
-padding:10px;
-background:#ffe1e1;
-border:1px solid #d60000;
-color:#900;
-border-radius:8px;
-text-align:center;
-margin-bottom:10px;
-font-weight:bold;
-}
-
-button{
-width:80%;
-max-width:500px;
-display:block;
-margin:8px auto;
-padding:12px;
-background:#222;
-color:#fff;
-border:0;
-border-radius:8px;
-font-size:15px;
-}
-
-table{
-width:100%;
-background:#fff;
-border-collapse:collapse;
-}
-
-th,td{
-border:1px solid #ddd;
-padding:6px;
-text-align:center;
-}
-
-th:nth-child(2),
-td:nth-child(2){
-min-width:30px;
-}
-
-th{background:#eee}
-.group{
-background:#dfe7ff !important;
-font-size:16px;
-font-weight:bold;
-border-top:2px solid #1e88e5 !important;
-border-left:2px solid #1e88e5 !important;
-border-right:2px solid #1e88e5 !important;
-border-bottom:0 !important;
-}
-.gstart{border-left:2px solid #1e88e5 !important;}
-.gend{border-right:2px solid #1e88e5 !important;}
-.gbottom{border-bottom:2px solid #1e88e5 !important;}
-
-select{width:100%}
-
-.nr.duplicate{
-background:#ffb3b3;
-border:2px solid #d60000;
-}
-
-.tw-row{
-background:#fff7df;
-}
-
-.tw-badge{
-display:inline-block;
-margin-left:6px;
-padding:2px 6px;
-border-radius:999px;
-background:#111827;
-color:#fff;
-font-size:11px;
-font-weight:bold;
-}
-
-.footer{
-text-align:center;
-font-size:12px;
-color:#777;
-margin-top:20px;
-}
+body{font-family:Arial;margin:10px;background:#f6f7f9}h1{text-align:center}.status{padding:10px;background:#fff;border:1px solid #ddd;border-radius:8px;text-align:center;margin-bottom:10px;font-weight:bold}.warning{display:none;padding:10px;background:#ffe1e1;border:1px solid #d60000;color:#900;border-radius:8px;text-align:center;margin-bottom:10px;font-weight:bold}button{width:80%;max-width:500px;display:block;margin:8px auto;padding:12px;background:#222;color:#fff;border:0;border-radius:8px;font-size:15px}table{width:100%;background:#fff;border-collapse:collapse}th,td{border:1px solid #ddd;padding:6px;text-align:center}th:nth-child(2),td:nth-child(2){min-width:30px}th{background:#eee}.group{background:#dfe7ff!important;font-size:16px;font-weight:bold;border-top:2px solid #1e88e5!important;border-left:2px solid #1e88e5!important;border-right:2px solid #1e88e5!important;border-bottom:0!important}.gstart{border-left:2px solid #1e88e5!important}.gend{border-right:2px solid #1e88e5!important}.gbottom{border-bottom:2px solid #1e88e5!important}select{width:100%}.nr.duplicate{background:#ffb3b3;border:2px solid #d60000}.section-row td{background:#111827;color:#fff;font-weight:bold;text-align:left;padding:10px;font-size:15px}.section-row.tw td{background:#92400e}.tw-row{background:#fff7df}.tw-badge{display:inline-block;margin-left:6px;padding:2px 6px;border-radius:999px;background:#111827;color:#fff;font-size:11px;font-weight:bold}.note{background:#fff7df;border:1px solid #f59e0b;border-radius:8px;padding:10px;margin:10px 0;text-align:center;font-weight:bold;color:#78350f}.footer{text-align:center;font-size:12px;color:#777;margin-top:20px}
 </style>
 </head>
-
 <body>
-
 <h1>Bestellübersicht Saison 2026/27</h1>
-
 <div class="status" id="status">Lade...</div>
 <div class="warning" id="warning">Doppelte Rückennummer vorhanden. Bitte korrigieren.</div>
-
+<div class="note">Torhüter Paul B., Noel und Benjamin sind bei Trikot-Oberteil und Trikot-Hose separat zu behandeln.</div>
 <button onclick="syncAll()">Speichern</button>
 <button onclick="exportTrikots()">Trikots Export</button>
 <button onclick="exportPraes()">Präs. Export</button>
 <button onclick="exportWinter()">Winter Export</button>
-
 <table>
 <thead>
-<tr>
-<th rowspan="2" style="border-bottom:1px solid #ddd;">Spieler</th>
-<th rowspan="2" style="border-bottom:1px solid #ddd;">Nr</th>
-
-<th colspan="2" class="group">Trikot</th>
-
-<th colspan="3" class="group">Präsentationsanzug</th>
-
-<th colspan="1" class="group">Winterjacke</th>
-</tr>
-
-<tr>
-<th class="gstart gbottom">Oberteil</th>
-<th class="gend gbottom">Hose</th>
-
-<th class="gstart gbottom">Jacke</th>
-<th class="gbottom">T-Shirt</th>
-<th class="gend gbottom">Hose</th>
-
-<th class="gstart gend gbottom">Winter</th>
-</tr>
+<tr><th rowspan="2" style="border-bottom:1px solid #ddd;">Spieler</th><th rowspan="2" style="border-bottom:1px solid #ddd;">Nr</th><th colspan="2" class="group">Trikot</th><th colspan="3" class="group">Präsentationsanzug</th><th colspan="1" class="group">Winterjacke</th></tr>
+<tr><th class="gstart gbottom">Oberteil</th><th class="gend gbottom">Hose</th><th class="gstart gbottom">Jacke</th><th class="gbottom">T-Shirt</th><th class="gend gbottom">Hose</th><th class="gstart gend gbottom">Winter</th></tr>
 </thead>
-
 <tbody id="tb"></tbody>
 </table>
-
 <div class="footer">Programmiert von F. Kaplan</div>
-
 <script>
-
 const API_URL="https://script.google.com/macros/s/AKfycbytXhWsaJgviOX_TMJKqefWSO99I6LE0pXnr48jJrXYJdD85yDrWqe2714NqED40C5j/exec";
-
-/* Torhüter: Trikot-Oberteil und Trikot-Hose müssen separat exportiert werden */
 const goalkeepers=["Paul B.","Noel","Benjamin"];
-
-function isGoalkeeper(name){
-return goalkeepers.includes(name);
-}
-
-/* FIX: feste stabile Spielerliste */
-const players=[
-{n:"Paul B.",nr:1},
-{n:"Benjamin",nr:2},
-{n:"Noel",nr:3},
-{n:"Mika",nr:4},
-{n:"Mario K.",nr:5},
-{n:"Jonas K.",nr:6},
-{n:"Julian H.",nr:7},
-{n:"Malik V.",nr:9},
-{n:"Paul H.",nr:10},
-{n:"Semih D.",nr:11},
-{n:"Elias",nr:12},
-{n:"Aos A.",nr:13},
-{n:"Piotr K.",nr:14},
-{n:"Efe K.",nr:16},
-{n:"Kirill B.",nr:19},
-{n:"Jannik H.",nr:22},
-{n:"David W.",nr:30},
-{n:"Ahmet S.",nr:61}
-];
-
-function setStatus(t){
-document.getElementById("status").innerText=t;
-}
-
-function checkNumbers(){
-const nums={};
-let hasDuplicate=false;
-
-document.querySelectorAll(".nr").forEach(sel=>{
-sel.classList.remove("duplicate");
-const val=sel.value;
-if(!nums[val]) nums[val]=[];
-nums[val].push(sel);
-});
-
-Object.values(nums).forEach(list=>{
-if(list.length>1){
-hasDuplicate=true;
-list.forEach(sel=>sel.classList.add("duplicate"));
-}
-});
-
-document.getElementById("warning").style.display=hasDuplicate?"block":"none";
-return !hasDuplicate;
-}
-
-function row(p){
-const tw=isGoalkeeper(p.n);
-return `
-<tr data-name="${p.n}" class="${tw?'tw-row':''}">
-<td>${p.n}${tw?'<span class="tw-badge">TW</span>':''}</td>
-<td>
-<select class="nr" onchange="checkNumbers()">
-${Array.from({length:99},(_,i)=>`<option ${i+1==p.nr?'selected':''}>${i+1}</option>`).join("")}
-</select>
-</td>
-<td><select class="o"></select></td>
-<td><select class="h"></select></td>
-<td><select class="j"></select></td>
-<td><select class="t"></select></td>
-<td><select class="h2"></select></td>
-<td><select class="w"></select></td>
-</tr>`;
-}
-
-function opt(){
-return "<option></option><option>S</option><option>M</option><option>L</option><option>XL</option><option>164</option>";
-}
-
-function build(){
-document.getElementById("tb").innerHTML=players.map(row).join("");
-document.querySelectorAll("select:not(.nr)").forEach(s=>s.innerHTML=opt());
-checkNumbers();
-}
-
-/* LOAD */
-async function load(){
-try{
-const res=await fetch(API_URL);
-const data=await res.json();
-
-if(!Array.isArray(data)){
-setStatus("Fehler beim Laden");
-return;
-}
-
-data.forEach(d=>{
-let r=[...document.querySelectorAll("tr")].find(x=>x.dataset.name===d.spieler);
-
-if(String(d.nummer||"")==="GELOESCHT"){
-  if(r) r.remove();
-  return;
-}
-
-if(!r){
-  document.getElementById("tb").insertAdjacentHTML("beforeend", row({n:d.spieler,nr:d.nummer||1}));
-  r=document.getElementById("tb").lastElementChild;
-  r.querySelectorAll("select:not(.nr)").forEach(s=>s.innerHTML=opt());
-}
-
-r.querySelector(".nr").value=d.nummer||"";
-r.querySelector(".o").value=d.trikotOberteil||"";
-r.querySelector(".h").value=d.trikotHose||"";
-r.querySelector(".j").value=d.praesJacke||"";
-r.querySelector(".t").value=d.praesShirt||"";
-r.querySelector(".h2").value=d.praesHose||"";
-r.querySelector(".w").value=d.winterjacke||"";
-});
-
-checkNumbers();
-setStatus("geladen");
-
-}catch(e){
-console.log(e);
-setStatus("Fehler beim Laden");
-}
-}
-
-/* SAVE (STABIL) */
-async function syncAll(){
-try{
-
-if(!checkNumbers()){
-setStatus("Speichern blockiert: doppelte Rückennummer");
-alert("Doppelte Rückennummer vorhanden. Bitte zuerst korrigieren.");
-return;
-}
-
-setStatus("Speichern...");
-
-const payload=[...document.querySelectorAll("tbody tr")].map(r=>({
-spieler:r.dataset.name,
-nummer:r.querySelector(".nr").value,
-trikotOberteil:r.querySelector(".o").value,
-trikotHose:r.querySelector(".h").value,
-praesJacke:r.querySelector(".j").value,
-praesShirt:r.querySelector(".t").value,
-praesHose:r.querySelector(".h2").value,
-winterjacke:r.querySelector(".w").value
-}));
-
-await fetch(API_URL,{
-method:"POST",
-body:JSON.stringify({batch:payload})
-});
-
-setStatus("gespeichert ✔");
-
-}catch(e){
-console.log(e);
-setStatus("Fehler beim Speichern ❌");
-}
-}
-
-/* EXPORT */
-function gruppieren(sel, filterFn=()=>true){
-const m={};
-document.querySelectorAll("tbody tr").forEach(r=>{
-if(!filterFn(r)) return;
-const v=r.querySelector(sel).value;
-if(!v) return;
-if(!m[v]) m[v]=[];
-m[v].push(r.querySelector(".nr").value);
-});
-return m;
-}
-
-function isTwRow(r){
-return isGoalkeeper(r.dataset.name);
-}
-
-function isFieldRow(r){
-return !isGoalkeeper(r.dataset.name);
-}
-
-function format(title,data){
-const order=["164","S","M","L","XL"];
-let t=title+"\n\n";
-let sum=0;
-
-order.forEach(s=>{
-if(!data[s]) return;
-sum+=data[s].length;
-t+=`${s} (${data[s].length}x): ${data[s].join(", ")}\n`;
-});
-
-return t+"\nGesamt: "+sum+" Stück";
-}
-
-function formatOhneNummern(title,data){
-const order=["164","S","M","L","XL"];
-let t=title+"\n\n";
-let sum=0;
-
-order.forEach(s=>{
-if(!data[s]) return;
-sum+=data[s].length;
-t+=`${s}: ${data[s].length}x\n`;
-});
-
-return t+"\nGesamt: "+sum+" Stück";
-}
-
-function copy(t){
-navigator.clipboard.writeText(t);
-alert("kopiert");
-}
-
-function exportTrikots(){
-const feldOberteil=gruppieren(".o",isFieldRow);
-const twOberteil=gruppieren(".o",isTwRow);
-const feldHose=gruppieren(".h",isFieldRow);
-const twHose=gruppieren(".h",isTwRow);
-
-copy(
-"FELDSPIELER TRIKOT OBERTEIL\n\n"+
-format("Oberteil",feldOberteil)+
-"\n\nTORWART TRIKOT OBERTEIL\n\n"+
-format("TW Oberteil",twOberteil)+
-"\n\nFELDSPIELER TRIKOT HOSE\n\n"+
-formatOhneNummern("Hose",feldHose)+
-"\n\nTORWART TRIKOT HOSE\n\n"+
-formatOhneNummern("TW Hose",twHose)
-);
-}
-
-function exportPraes(){
-copy("PRÄSENTATION\n\n"+format("Jacke",gruppieren(".j"))+"\n\nT-SHIRT\n\n"+format("Shirt",gruppieren(".t"))+"\n\nHOSE\n\n"+format("Hose",gruppieren(".h2")));
-}
-
-function exportWinter(){
-copy("WINTERJACKE\n\n"+format("Winter",gruppieren(".w")));
-}
-
-build();
-load();
-
+function isGoalkeeper(name){return goalkeepers.includes(name)}
+const players=[{n:"Paul B.",nr:1},{n:"Benjamin",nr:2},{n:"Noel",nr:3},{n:"Mika",nr:4},{n:"Mario K.",nr:5},{n:"Jonas K.",nr:6},{n:"Julian H.",nr:7},{n:"Malik V.",nr:9},{n:"Paul H.",nr:10},{n:"Semih D.",nr:11},{n:"Elias",nr:12},{n:"Aos A.",nr:13},{n:"Piotr K.",nr:14},{n:"Efe K.",nr:16},{n:"Kirill B.",nr:19},{n:"Jannik H.",nr:22},{n:"David W.",nr:30},{n:"Ahmet S.",nr:61}];
+function setStatus(t){document.getElementById("status").innerText=t}
+function checkNumbers(){const nums={};let hasDuplicate=false;document.querySelectorAll(".nr").forEach(sel=>{sel.classList.remove("duplicate");const val=sel.value;if(!nums[val])nums[val]=[];nums[val].push(sel)});Object.values(nums).forEach(list=>{if(list.length>1){hasDuplicate=true;list.forEach(sel=>sel.classList.add("duplicate"))}});document.getElementById("warning").style.display=hasDuplicate?"block":"none";return !hasDuplicate}
+function section(title,tw=false){return `<tr class="section-row ${tw?'tw':''}"><td colspan="8">${title}</td></tr>`}
+function row(p){const tw=isGoalkeeper(p.n);return `<tr data-name="${p.n}" class="${tw?'tw-row':''}"><td>${p.n}${tw?'<span class="tw-badge">TW</span>':''}</td><td><select class="nr" onchange="checkNumbers()">${Array.from({length:99},(_,i)=>`<option ${i+1==p.nr?'selected':''}>${i+1}</option>`).join("")}</select></td><td><select class="o"></select></td><td><select class="h"></select></td><td><select class="j"></select></td><td><select class="t"></select></td><td><select class="h2"></select></td><td><select class="w"></select></td></tr>`}
+function opt(){return "<option></option><option>S</option><option>M</option><option>L</option><option>XL</option><option>164</option>"}
+function build(){const field=players.filter(p=>!isGoalkeeper(p.n)).map(row).join("");const tw=players.filter(p=>isGoalkeeper(p.n)).map(row).join("");document.getElementById("tb").innerHTML=section("Feldspieler")+field+section("Torhüter - andere Farbe / eigene TW-Artikel",true)+tw;document.querySelectorAll("select:not(.nr)").forEach(s=>s.innerHTML=opt());checkNumbers()}
+async function load(){try{const res=await fetch(API_URL);const data=await res.json();if(!Array.isArray(data)){setStatus("Fehler beim Laden");return}data.forEach(d=>{let r=[...document.querySelectorAll("tbody tr[data-name]")].find(x=>x.dataset.name===d.spieler);if(String(d.nummer||"")==="GELOESCHT"){if(r)r.remove();return}if(!r){document.getElementById("tb").insertAdjacentHTML("beforeend",row({n:d.spieler,nr:d.nummer||1}));r=document.getElementById("tb").lastElementChild;r.querySelectorAll("select:not(.nr)").forEach(s=>s.innerHTML=opt())}r.querySelector(".nr").value=d.nummer||"";r.querySelector(".o").value=d.trikotOberteil||"";r.querySelector(".h").value=d.trikotHose||"";r.querySelector(".j").value=d.praesJacke||"";r.querySelector(".t").value=d.praesShirt||"";r.querySelector(".h2").value=d.praesHose||"";r.querySelector(".w").value=d.winterjacke||""});checkNumbers();setStatus("geladen")}catch(e){console.log(e);setStatus("Fehler beim Laden")}}
+async function syncAll(){try{if(!checkNumbers()){setStatus("Speichern blockiert: doppelte Rückennummer");alert("Doppelte Rückennummer vorhanden. Bitte zuerst korrigieren.");return}setStatus("Speichern...");const payload=[...document.querySelectorAll("tbody tr[data-name]")].map(r=>({spieler:r.dataset.name,nummer:r.querySelector(".nr").value,trikotOberteil:r.querySelector(".o").value,trikotHose:r.querySelector(".h").value,praesJacke:r.querySelector(".j").value,praesShirt:r.querySelector(".t").value,praesHose:r.querySelector(".h2").value,winterjacke:r.querySelector(".w").value}));await fetch(API_URL,{method:"POST",body:JSON.stringify({batch:payload})});setStatus("gespeichert ✔")}catch(e){console.log(e);setStatus("Fehler beim Speichern ❌")}}
+function gruppieren(sel,filterFn=()=>true){const m={};document.querySelectorAll("tbody tr[data-name]").forEach(r=>{if(!filterFn(r))return;const v=r.querySelector(sel).value;if(!v)return;if(!m[v])m[v]=[];m[v].push(r.querySelector(".nr").value)});return m}
+function isTwRow(r){return isGoalkeeper(r.dataset.name)}
+function isFieldRow(r){return !isGoalkeeper(r.dataset.name)}
+function format(title,data){const order=["164","S","M","L","XL"];let t=title+"\n\n";let sum=0;order.forEach(s=>{if(!data[s])return;sum+=data[s].length;t+=`${s} (${data[s].length}x): ${data[s].join(", ")}\n`});return t+"\nGesamt: "+sum+" Stück"}
+function formatOhneNummern(title,data){const order=["164","S","M","L","XL"];let t=title+"\n\n";let sum=0;order.forEach(s=>{if(!data[s])return;sum+=data[s].length;t+=`${s}: ${data[s].length}x\n`});return t+"\nGesamt: "+sum+" Stück"}
+function copy(t){navigator.clipboard.writeText(t);alert("kopiert")}
+function exportTrikots(){const feldOberteil=gruppieren(".o",isFieldRow);const twOberteil=gruppieren(".o",isTwRow);const feldHose=gruppieren(".h",isFieldRow);const twHose=gruppieren(".h",isTwRow);copy("FELDSPIELER TRIKOT OBERTEIL\n\n"+format("Oberteil",feldOberteil)+"\n\nTORWART TRIKOT OBERTEIL\n\n"+format("TW Oberteil",twOberteil)+"\n\nFELDSPIELER TRIKOT HOSE\n\n"+formatOhneNummern("Hose",feldHose)+"\n\nTORWART TRIKOT HOSE\n\n"+formatOhneNummern("TW Hose",twHose))}
+function exportPraes(){copy("PRÄSENTATION\n\n"+format("Jacke",gruppieren(".j"))+"\n\nT-SHIRT\n\n"+format("Shirt",gruppieren(".t"))+"\n\nHOSE\n\n"+format("Hose",gruppieren(".h2")))}
+function exportWinter(){copy("WINTERJACKE\n\n"+format("Winter",gruppieren(".w")))}
+build();load();
 </script>
-
 </body>
 </html>
