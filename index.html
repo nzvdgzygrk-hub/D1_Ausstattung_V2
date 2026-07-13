@@ -16,10 +16,11 @@ button{width:100%;display:block;margin:8px 0;padding:12px;background:#222;color:
 .export-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .export-row button{margin:0}
 .export-row .image{background:#50545a}
-.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:4px}
-table{width:818px;min-width:818px;background:#fff;border-collapse:collapse;table-layout:fixed}
-col.player{width:128px}col.number{width:72px}col.size{width:103px}
-th,td{border:1px solid #ddd;padding:6px 4px;text-align:center;overflow:hidden}
+.rotate-note{display:none;padding:14px;background:#fff4d6;border:1px solid #d7a72e;border-radius:8px;text-align:center;font-weight:bold;margin:12px 0}
+.table-wrap{width:100%;overflow:hidden;border-radius:4px}
+table{width:100%;min-width:0;background:#fff;border-collapse:collapse;table-layout:fixed}
+col.player{width:15%}col.number{width:10%}col.size{width:12.5%}
+th,td{border:1px solid #ddd;padding:6px 3px;text-align:center;overflow:hidden}
 th{background:#eee}
 td:first-child{white-space:nowrap;text-overflow:ellipsis}
 .group{background:#dfe7ff!important;font-size:15px;font-weight:bold;border-top:2px solid #1e88e5!important;border-left:2px solid #1e88e5!important;border-right:2px solid #1e88e5!important;border-bottom:0!important}
@@ -27,7 +28,29 @@ td:first-child{white-space:nowrap;text-overflow:ellipsis}
 select{display:block;width:100%;max-width:100%;min-width:0;font-size:16px;padding-left:4px}
 .nr{font-size:17px;padding-left:6px}.nr.duplicate{background:#ffb3b3;border:2px solid #d60000}
 .footer{text-align:center;font-size:12px;color:#777;margin-top:20px}
-@media(max-width:600px){body{margin:4px}h1{font-size:22px}.controls{padding:0 8px}button{font-size:15px;padding:11px 8px}.export-row{gap:6px}.export-row button{font-size:14px}th,td{padding:5px 3px}}
+@media(max-width:600px) and (orientation:portrait){
+  body{margin:4px}
+  h1{font-size:22px}
+  .controls{padding:0 8px}
+  button{font-size:15px;padding:11px 8px}
+  .export-row{gap:6px}
+  .export-row button{font-size:14px}
+  .rotate-note{display:block}
+  .table-wrap{display:none}
+}
+@media(orientation:landscape) and (max-height:600px){
+  body{margin:4px}
+  h1{font-size:21px;margin:8px 0}
+  .controls{max-width:100%;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;padding:0}
+  .controls>button{margin:0}
+  .export-row{display:contents}
+  .export-row .image{display:none}
+  button{font-size:13px;padding:9px 4px;margin:0}
+  th,td{padding:5px 2px;font-size:13px}
+  .group{font-size:14px}
+  select{font-size:14px;padding-left:2px}
+  .nr{font-size:15px;padding-left:4px}
+}
 </style>
 </head>
 <body>
@@ -40,6 +63,7 @@ select{display:block;width:100%;max-width:100%;min-width:0;font-size:16px;paddin
 <div class="export-row"><button onclick="exportPraes()">Präs. Export</button><button class="image" onclick="exportPraesBild()">Präs. als Bild</button></div>
 <div class="export-row"><button onclick="exportWinter()">Winter Export</button><button class="image" onclick="exportWinterBild()">Winter als Bild</button></div>
 </div>
+<div class="rotate-note">Bitte das iPhone quer drehen. Dann ist die komplette Tabelle ohne seitliches Scrollen sichtbar.</div>
 <div class="table-wrap"><table>
 <colgroup><col class="player"><col class="number"><col class="size"><col class="size"><col class="size"><col class="size"><col class="size"><col class="size"></colgroup>
 <thead>
