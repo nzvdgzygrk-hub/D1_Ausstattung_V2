@@ -11,11 +11,13 @@ body{font-family:Arial;margin:10px;background:#f6f7f9}
 h1{text-align:center}
 .status{padding:10px;background:#fff;border:1px solid #ddd;border-radius:8px;text-align:center;margin-bottom:10px;font-weight:bold}
 .warning{display:none;padding:10px;background:#ffe1e1;border:1px solid #d60000;color:#900;border-radius:8px;text-align:center;margin-bottom:10px;font-weight:bold}
-.controls{width:100%;max-width:500px;margin:0 auto 10px}
-button{width:100%;display:block;margin:8px 0;padding:12px;background:#222;color:#fff;border:0;border-radius:8px;font-size:15px}
-.export-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.export-row button{margin:0}
-.export-row .image{background:#50545a}
+.controls{width:100%;max-width:900px;margin:0 auto 10px}
+button{width:100%;display:block;padding:12px;background:#222;color:#fff;border:0;border-radius:8px;font-size:15px}
+.save-button{margin:0 0 8px}
+.export-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.export-group{display:grid;grid-template-rows:auto auto;gap:8px}
+.export-group button{margin:0}
+.export-group .image{background:#50545a}
 .rotate-note{display:none;padding:14px;background:#fff4d6;border:1px solid #d7a72e;border-radius:8px;text-align:center;font-weight:bold;margin:12px 0}
 .table-wrap{width:100%;overflow:hidden;border-radius:4px}
 table{width:100%;min-width:0;background:#fff;border-collapse:collapse;table-layout:fixed}
@@ -33,18 +35,19 @@ select{display:block;width:100%;max-width:100%;min-width:0;font-size:16px;paddin
   h1{font-size:22px}
   .controls{padding:0 8px}
   button{font-size:15px;padding:11px 8px}
-  .export-row{gap:6px}
-  .export-row button{font-size:14px}
+  .export-groups{grid-template-columns:1fr;gap:8px}
+  .export-group{gap:6px}
   .rotate-note{display:block}
   .table-wrap{display:none}
 }
 @media(orientation:landscape) and (max-height:600px){
   body{margin:4px}
   h1{font-size:21px;margin:8px 0}
-  .controls{max-width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0}
-  .controls>button{margin:0}
-  .export-row{display:contents}
-  button{font-size:13px;padding:9px 4px;margin:0}
+  .controls{max-width:100%;padding:0}
+  .save-button{margin-bottom:6px}
+  .export-groups{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .export-group{gap:6px}
+  button{font-size:13px;padding:9px 4px}
   th,td{padding:5px 2px;font-size:13px}
   .group{font-size:14px}
   select{font-size:14px;padding-left:2px}
@@ -57,10 +60,12 @@ select{display:block;width:100%;max-width:100%;min-width:0;font-size:16px;paddin
 <div class="status" id="status">Lade...</div>
 <div class="warning" id="warning">Doppelte Rückennummer vorhanden. Bitte korrigieren.</div>
 <div class="controls">
-<button onclick="syncAll()">Speichern</button>
-<div class="export-row"><button onclick="exportTrikots()">Trikot Export</button><button class="image" onclick="exportTrikotsBild()">Trikot als Bild</button></div>
-<div class="export-row"><button onclick="exportPraes()">Präs. Export</button><button class="image" onclick="exportPraesBild()">Präs. als Bild</button></div>
-<div class="export-row"><button onclick="exportWinter()">Winter Export</button><button class="image" onclick="exportWinterBild()">Winter als Bild</button></div>
+<button class="save-button" onclick="syncAll()">Speichern</button>
+<div class="export-groups">
+<div class="export-group"><button onclick="exportTrikots()">Trikot Export</button><button class="image" onclick="exportTrikotsBild()">Trikot als Bild</button></div>
+<div class="export-group"><button onclick="exportPraes()">Präs. Export</button><button class="image" onclick="exportPraesBild()">Präs. als Bild</button></div>
+<div class="export-group"><button onclick="exportWinter()">Winter Export</button><button class="image" onclick="exportWinterBild()">Winter als Bild</button></div>
+</div>
 </div>
 <div class="rotate-note">Bitte das Handy quer drehen. Dann ist die komplette Tabelle ohne seitliches Scrollen sichtbar.</div>
 <div class="table-wrap"><table>
