@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Bestellübersicht Saison 2026/27</title>
 <style>
-body{font-family:Arial;margin:10px;background:#f6f7f9}h1{text-align:center}.status{padding:10px;background:#fff;border:1px solid #ddd;border-radius:8px;text-align:center;margin-bottom:10px;font-weight:bold}.warning{display:none;padding:10px;background:#ffe1e1;border:1px solid #d60000;color:#900;border-radius:8px;text-align:center;margin-bottom:10px;font-weight:bold}button{width:80%;max-width:500px;display:block;margin:8px auto;padding:12px;background:#222;color:#fff;border:0;border-radius:8px;font-size:15px}table{width:100%;background:#fff;border-collapse:collapse}th,td{border:1px solid #ddd;padding:6px;text-align:center}th:nth-child(2),td:nth-child(2){min-width:30px}th{background:#eee}.group{background:#dfe7ff!important;font-size:16px;font-weight:bold;border-top:2px solid #1e88e5!important;border-left:2px solid #1e88e5!important;border-right:2px solid #1e88e5!important;border-bottom:0!important}.gstart{border-left:2px solid #1e88e5!important}.gend{border-right:2px solid #1e88e5!important}.gbottom{border-bottom:2px solid #1e88e5!important}select{width:100%}.nr.duplicate{background:#ffb3b3;border:2px solid #d60000}.footer{text-align:center;font-size:12px;color:#777;margin-top:20px}
+body{font-family:Arial;margin:10px;background:#f6f7f9}h1{text-align:center}.status{padding:10px;background:#fff;border:1px solid #ddd;border-radius:8px;text-align:center;margin-bottom:10px;font-weight:bold}.warning{display:none;padding:10px;background:#ffe1e1;border:1px solid #d60000;color:#900;border-radius:8px;text-align:center;margin-bottom:10px;font-weight:bold}button{width:80%;max-width:500px;display:block;margin:8px auto;padding:12px;background:#222;color:#fff;border:0;border-radius:8px;font-size:15px}table{width:100%;background:#fff;border-collapse:collapse}th,td{border:1px solid #ddd;padding:6px;text-align:center}th:first-child,td:first-child{min-width:120px}th:nth-child(2),td:nth-child(2){min-width:58px;width:58px}th{background:#eee}.group{background:#dfe7ff!important;font-size:16px;font-weight:bold;border-top:2px solid #1e88e5!important;border-left:2px solid #1e88e5!important;border-right:2px solid #1e88e5!important;border-bottom:0!important}.gstart{border-left:2px solid #1e88e5!important}.gend{border-right:2px solid #1e88e5!important}.gbottom{border-bottom:2px solid #1e88e5!important}select{width:100%}.nr{min-width:52px;width:52px}.nr.duplicate{background:#ffb3b3;border:2px solid #d60000}.footer{text-align:center;font-size:12px;color:#777;margin-top:20px}@media(max-width:600px){body{margin:4px}h1{font-size:22px}th,td{padding:5px 4px}th:nth-child(2),td:nth-child(2){min-width:62px;width:62px}.nr{min-width:56px;width:56px}}
 </style>
 </head>
 <body>
@@ -13,7 +13,7 @@ body{font-family:Arial;margin:10px;background:#f6f7f9}h1{text-align:center}.stat
 <div class="status" id="status">Lade...</div>
 <div class="warning" id="warning">Doppelte Rückennummer vorhanden. Bitte korrigieren.</div>
 <button onclick="syncAll()">Speichern</button>
-<button onclick="exportTrikots()">Trikots Export</button>
+<button onclick="exportTrikotsBild()">Trikots als Bild exportieren</button>
 <button onclick="exportPraes()">Präs. Export</button>
 <button onclick="exportWinter()">Winter Export</button>
 <table>
@@ -42,9 +42,32 @@ function gruppieren(sel,filterFn=()=>true){const m={};document.querySelectorAll(
 function isTwRow(r){return isGoalkeeper(r.dataset.name)}
 function isFieldRow(r){return !isGoalkeeper(r.dataset.name)}
 function format(title,data){const order=["164","S","M","L","XL"];let t=title+"\n\n";let sum=0;order.forEach(s=>{if(!data[s])return;sum+=data[s].length;t+=`${s} (${data[s].length}x): ${data[s].join(", ")}\n`});return t+"\nGesamt: "+sum+" Stück"}
-function formatOhneNummern(title,data){const order=["164","S","M","L","XL"];let t=title+"\n\n";let sum=0;order.forEach(s=>{if(!data[s])return;sum+=data[s].length;t+=`${s}: ${data[s].length}x\n`});return t+"\nGesamt: "+sum+" Stück"}
 function copy(t){navigator.clipboard.writeText(t);alert("kopiert")}
-function exportTrikots(){const feldOberteil=gruppieren(".o",isFieldRow);const twOberteil=gruppieren(".o",isTwRow);const feldHose=gruppieren(".h",isFieldRow);const twHose=gruppieren(".h",isTwRow);copy("FELDSPIELER TRIKOT OBERTEIL\n\n"+format("Oberteil",feldOberteil)+"\n\nTORWART TRIKOT OBERTEIL\n\n"+format("TW Oberteil",twOberteil)+"\n\nFELDSPIELER TRIKOT HOSE\n\n"+formatOhneNummern("Hose",feldHose)+"\n\nTORWART TRIKOT HOSE\n\n"+formatOhneNummern("TW Hose",twHose))}
+function getTrikotRows(filterFn){return [...document.querySelectorAll("tbody tr")].filter(filterFn).map(r=>({spieler:r.dataset.name,nr:r.querySelector(".nr").value,oberteil:r.querySelector(".o").value||"–",hose:r.querySelector(".h").value||"–"})).sort((a,b)=>Number(a.nr)-Number(b.nr)||a.spieler.localeCompare(b.spieler,"de"))}
+function exportTrikotsBild(){
+  if(!checkNumbers()){alert("Doppelte Rückennummer vorhanden. Bitte zuerst korrigieren.");return}
+  const feldspieler=getTrikotRows(isFieldRow);
+  const torhueter=getTrikotRows(isTwRow);
+  const scale=2,canvasWidth=1080,margin=40,titleHeight=100,sectionTitleHeight=58,headerHeight=62,rowHeight=58,totalHeight=38,sectionGap=36;
+  const sectionHeight=rows=>sectionTitleHeight+headerHeight+(rows.length*rowHeight)+totalHeight;
+  const canvasHeight=margin+titleHeight+sectionHeight(feldspieler)+sectionGap+sectionHeight(torhueter)+margin;
+  const canvas=document.createElement("canvas");canvas.width=canvasWidth*scale;canvas.height=canvasHeight*scale;
+  const ctx=canvas.getContext("2d");ctx.scale(scale,scale);ctx.fillStyle="#fff";ctx.fillRect(0,0,canvasWidth,canvasHeight);
+  ctx.fillStyle="#111";ctx.textBaseline="middle";ctx.textAlign="center";ctx.font="bold 36px Arial";ctx.fillText("TRIKOT-BESTELLLISTE",canvasWidth/2,margin+32);ctx.font="24px Arial";ctx.fillText("Saison 2026/27",canvasWidth/2,margin+70);
+  const tableWidth=canvasWidth-(margin*2),colWidths=[400,120,240,240],headers=["Spieler","Nr.","Oberteil","Hose"];
+  let y=margin+titleHeight;
+  function cell(x,yPos,w,h,text,bold=false,align="center",fill="#fff"){
+    ctx.fillStyle=fill;ctx.fillRect(x,yPos,w,h);ctx.strokeStyle="#b8bcc2";ctx.lineWidth=1.5;ctx.strokeRect(x,yPos,w,h);ctx.fillStyle="#111";ctx.font=`${bold?'bold ':''}24px Arial`;ctx.textAlign=align;const tx=align==="left"?x+14:x+w/2;ctx.fillText(String(text),tx,yPos+h/2);
+  }
+  function section(title,rows){
+    ctx.fillStyle="#dfe7ff";ctx.fillRect(margin,y,tableWidth,sectionTitleHeight);ctx.strokeStyle="#1e88e5";ctx.lineWidth=2;ctx.strokeRect(margin,y,tableWidth,sectionTitleHeight);ctx.fillStyle="#111";ctx.font="bold 28px Arial";ctx.textAlign="left";ctx.fillText(title,margin+16,y+sectionTitleHeight/2);y+=sectionTitleHeight;
+    let x=margin;headers.forEach((h,i)=>{cell(x,y,colWidths[i],headerHeight,h,true,"center","#eeeeee");x+=colWidths[i]});y+=headerHeight;
+    rows.forEach(r=>{x=margin;const values=[r.spieler,r.nr,r.oberteil,r.hose];values.forEach((v,i)=>{cell(x,y,colWidths[i],rowHeight,v,false,i===0?"left":"center");x+=colWidths[i]});y+=rowHeight});
+    ctx.fillStyle="#f6f7f9";ctx.fillRect(margin,y,tableWidth,totalHeight);ctx.strokeStyle="#b8bcc2";ctx.strokeRect(margin,y,tableWidth,totalHeight);ctx.fillStyle="#111";ctx.font="bold 21px Arial";ctx.textAlign="right";ctx.fillText(`Gesamt: ${rows.length} Stück`,margin+tableWidth-14,y+totalHeight/2);y+=totalHeight;
+  }
+  section("FELDSPIELER",feldspieler);y+=sectionGap;section("TORHÜTER",torhueter);
+  canvas.toBlob(async blob=>{if(!blob){alert("Bild konnte nicht erstellt werden.");return}const datum=new Date().toISOString().slice(0,10);const file=new File([blob],`Trikot-Bestellliste-${datum}.png`,{type:"image/png"});try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"Trikot-Bestellliste"})}else{const a=document.createElement("a");const url=URL.createObjectURL(blob);a.href=url;a.download=file.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)}}catch(e){if(e.name!=="AbortError"){console.log(e);alert("Bild konnte nicht geteilt werden.")}}},"image/png");
+}
 function exportPraes(){copy("PRÄSENTATION\n\n"+format("Jacke",gruppieren(".j"))+"\n\nT-SHIRT\n\n"+format("Shirt",gruppieren(".t"))+"\n\nHOSE\n\n"+format("Hose",gruppieren(".h2")))}
 function exportWinter(){copy("WINTERJACKE\n\n"+format("Winter",gruppieren(".w")))}
 build();load();
