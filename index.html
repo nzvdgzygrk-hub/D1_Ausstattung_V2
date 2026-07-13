@@ -16,40 +16,18 @@ button{width:100%;display:block;margin:8px 0;padding:12px;background:#222;color:
 .export-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .export-row button{margin:0}
 .export-row .image{background:#50545a}
-.table-wrap{width:100%;overflow:visible;border-radius:4px}
-table{width:100%;background:#fff;border-collapse:collapse;table-layout:fixed}
-col.player{width:20%}col.number{width:14%}col.size{width:11%}
-th,td{border:1px solid #ddd;padding:5px 2px;text-align:center;overflow:hidden}
+.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:4px}
+table{width:818px;min-width:818px;background:#fff;border-collapse:collapse;table-layout:fixed}
+col.player{width:128px}col.number{width:72px}col.size{width:103px}
+th,td{border:1px solid #ddd;padding:6px 4px;text-align:center;overflow:hidden}
 th{background:#eee}
 td:first-child{white-space:nowrap;text-overflow:ellipsis}
-.group{background:#dfe7ff!important;font-size:14px;font-weight:bold;border-top:2px solid #1e88e5!important;border-left:2px solid #1e88e5!important;border-right:2px solid #1e88e5!important;border-bottom:0!important;overflow-wrap:anywhere}
+.group{background:#dfe7ff!important;font-size:15px;font-weight:bold;border-top:2px solid #1e88e5!important;border-left:2px solid #1e88e5!important;border-right:2px solid #1e88e5!important;border-bottom:0!important}
 .gstart{border-left:2px solid #1e88e5!important}.gend{border-right:2px solid #1e88e5!important}.gbottom{border-bottom:2px solid #1e88e5!important}
-select{display:block;width:100%;max-width:100%;min-width:0;font-size:14px;padding-left:2px}
-.nr{font-size:15px;padding-left:4px}.nr.duplicate{background:#ffb3b3;border:2px solid #d60000}
+select{display:block;width:100%;max-width:100%;min-width:0;font-size:16px;padding-left:4px}
+.nr{font-size:17px;padding-left:6px}.nr.duplicate{background:#ffb3b3;border:2px solid #d60000}
 .footer{text-align:center;font-size:12px;color:#777;margin-top:20px}
-@media(max-width:600px){
-  body{margin:4px}
-  h1{font-size:22px}
-  .controls{padding:0 8px}
-  button{font-size:15px;padding:11px 8px}
-  .export-row{gap:6px}
-  .export-row button{font-size:14px}
-  table,tbody{display:block;width:100%;background:transparent}
-  thead,colgroup{display:none}
-  tbody tr{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));width:100%;margin:10px 0;background:#fff;border:1px solid #cfd3d8;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-  tbody td{display:flex;flex-direction:column;align-items:stretch;justify-content:center;min-width:0;min-height:66px;padding:6px 7px;border:0;border-right:1px solid #e0e2e5;border-bottom:1px solid #e0e2e5;font-size:16px;overflow:visible}
-  tbody td::before{content:attr(data-label);display:block;margin-bottom:4px;font-size:11px;line-height:1.2;font-weight:bold;color:#5d636b;text-align:left;white-space:normal}
-  .player-cell{grid-column:1/5;font-size:18px;font-weight:bold;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .number-cell{grid-column:5/7}
-  .o-cell{grid-column:1/4}
-  .h-cell{grid-column:4/7}
-  .j-cell{grid-column:1/3}
-  .t-cell{grid-column:3/5}
-  .h2-cell{grid-column:5/7}
-  .w-cell{grid-column:1/7;border-bottom:0}
-  select{font-size:17px;padding:5px 6px;min-height:36px}
-  .nr{font-size:18px;padding-left:8px}
-}
+@media(max-width:600px){body{margin:4px}h1{font-size:22px}.controls{padding:0 8px}button{font-size:15px;padding:11px 8px}.export-row{gap:6px}.export-row button{font-size:14px}th,td{padding:5px 3px}}
 </style>
 </head>
 <body>
@@ -77,7 +55,7 @@ function isGoalkeeper(n){return goalkeepers.includes(n)}
 function setStatus(t){document.getElementById("status").innerText=t}
 function sortRowsByNumber(){const tb=document.getElementById("tb");[...tb.querySelectorAll("tr")].sort((a,b)=>Number(a.querySelector(".nr")?.value||9999)-Number(b.querySelector(".nr")?.value||9999)||String(a.dataset.name||"").localeCompare(String(b.dataset.name||""),"de")).forEach(r=>tb.appendChild(r))}
 function checkNumbers(){const nums={};let d=false;document.querySelectorAll(".nr").forEach(s=>{s.classList.remove("duplicate");(nums[s.value]??=[]).push(s)});Object.values(nums).forEach(a=>{if(a.length>1){d=true;a.forEach(s=>s.classList.add("duplicate"))}});document.getElementById("warning").style.display=d?"block":"none";return !d}
-function row(p){return `<tr data-name="${p.n}"><td class="player-cell" data-label="Spieler">${p.n}</td><td class="number-cell" data-label="Rückennummer"><select class="nr" onchange="checkNumbers();sortRowsByNumber()">${Array.from({length:99},(_,i)=>`<option ${i+1==p.nr?'selected':''}>${i+1}</option>`).join("")}</select></td><td class="o-cell" data-label="Trikot · Oberteil"><select class="o"></select></td><td class="h-cell" data-label="Trikot · Hose"><select class="h"></select></td><td class="j-cell" data-label="Präsentation · Jacke"><select class="j"></select></td><td class="t-cell" data-label="Präsentation · T-Shirt"><select class="t"></select></td><td class="h2-cell" data-label="Präsentation · Hose"><select class="h2"></select></td><td class="w-cell" data-label="Winterjacke"><select class="w"></select></td></tr>`}
+function row(p){return `<tr data-name="${p.n}"><td>${p.n}</td><td><select class="nr" onchange="checkNumbers();sortRowsByNumber()">${Array.from({length:99},(_,i)=>`<option ${i+1==p.nr?'selected':''}>${i+1}</option>`).join("")}</select></td><td><select class="o"></select></td><td><select class="h"></select></td><td><select class="j"></select></td><td><select class="t"></select></td><td><select class="h2"></select></td><td><select class="w"></select></td></tr>`}
 function opt(){return "<option></option><option>S</option><option>M</option><option>L</option><option>XL</option><option>164</option>"}
 function build(){document.getElementById("tb").innerHTML=players.map(row).join("");document.querySelectorAll("select:not(.nr)").forEach(s=>s.innerHTML=opt());checkNumbers();sortRowsByNumber()}
 async function load(){try{const res=await fetch(API_URL),data=await res.json();if(!Array.isArray(data)){setStatus("Fehler beim Laden");return}data.forEach(d=>{let r=[...document.querySelectorAll("tbody tr")].find(x=>x.dataset.name===d.spieler);if(String(d.nummer||"")==="GELOESCHT"){if(r)r.remove();return}if(!r){document.getElementById("tb").insertAdjacentHTML("beforeend",row({n:d.spieler,nr:d.nummer||1}));r=document.getElementById("tb").lastElementChild;r.querySelectorAll("select:not(.nr)").forEach(s=>s.innerHTML=opt())}r.querySelector(".nr").value=d.nummer||"";r.querySelector(".o").value=d.trikotOberteil||"";r.querySelector(".h").value=d.trikotHose||"";r.querySelector(".j").value=d.praesJacke||"";r.querySelector(".t").value=d.praesShirt||"";r.querySelector(".h2").value=d.praesHose||"";r.querySelector(".w").value=d.winterjacke||""});checkNumbers();sortRowsByNumber();setStatus("geladen")}catch(e){console.log(e);setStatus("Fehler beim Laden")}}
@@ -95,7 +73,7 @@ function getRows(cols,filter=()=>true){return [...document.querySelectorAll("tbo
 function countText(rows,key,label){const o=["164","S","M","L","XL"],c={};rows.forEach(r=>{const v=r[key];if(v&&v!=="–")c[v]=(c[v]||0)+1});const p=o.filter(s=>c[s]).map(s=>`${s}: ${c[s]}x`);return `${label}: ${p.length?p.join(" · "):"keine Angaben"}`}
 function shareCanvas(canvas,prefix,title){canvas.toBlob(async blob=>{if(!blob)return alert("Bild konnte nicht erstellt werden.");const file=new File([blob],`${prefix}-${new Date().toISOString().slice(0,10)}.png`,{type:"image/png"});try{if(navigator.canShare&&navigator.canShare({files:[file]}))await navigator.share({files:[file],title});else{const a=document.createElement("a"),u=URL.createObjectURL(blob);a.href=u;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(u),2000)}}catch(e){if(e.name!=="AbortError")alert("Bild konnte nicht geteilt werden.")}},"image/png")}
 function exportTableImage(c){if(!checkNumbers())return alert("Doppelte Rückennummer vorhanden. Bitte zuerst korrigieren.");const scale=2,W=1080,m=40,th=100,sh=58,hh=62,rh=54,suh=34,gh=38,gap=34,tw=W-2*m;const sectionHeight=s=>sh+hh+s.rows.length*rh+s.summaries.length*suh+gh;const H=m+th+c.sections.reduce((a,s)=>a+sectionHeight(s),0)+gap*(c.sections.length-1)+m,canvas=document.createElement("canvas");canvas.width=W*scale;canvas.height=H*scale;const x=canvas.getContext("2d");x.scale(scale,scale);x.fillStyle="#fff";x.fillRect(0,0,W,H);x.textBaseline="middle";x.fillStyle="#111";x.textAlign="center";x.font="bold 36px Arial";x.fillText(c.title,W/2,m+32);x.font="24px Arial";x.fillText("Saison 2026/27",W/2,m+70);let y=m+th;function cell(px,py,w,h,text,b=false,a="center",f="#fff"){x.fillStyle=f;x.fillRect(px,py,w,h);x.strokeStyle="#b8bcc2";x.strokeRect(px,py,w,h);x.fillStyle="#111";x.font=`${b?'bold ':''}24px Arial`;x.textAlign=a;x.fillText(String(text),a==="left"?px+14:px+w/2,py+h/2)}c.sections.forEach((s,i)=>{x.fillStyle="#dfe7ff";x.fillRect(m,y,tw,sh);x.strokeStyle="#1e88e5";x.strokeRect(m,y,tw,sh);x.fillStyle="#111";x.font="bold 28px Arial";x.textAlign="left";x.fillText(s.title,m+16,y+sh/2);y+=sh;let px=m;c.columns.forEach(k=>{cell(px,y,k.width,hh,k.label,true,"center","#eee");px+=k.width});y+=hh;s.rows.forEach(r=>{px=m;c.columns.forEach((k,j)=>{cell(px,y,k.width,rh,r[k.key],false,j?"center":"left");px+=k.width});y+=rh});s.summaries.forEach(t=>{cell(m,y,tw,suh,t,false,"left","#f6f7f9");y+=suh});cell(m,y,tw,gh,`Gesamt: ${s.rows.length} Spieler`,true,"center","#eef0f3");y+=gh;if(i<c.sections.length-1)y+=gap});shareCanvas(canvas,c.filePrefix,c.shareTitle)}
-function exportTrikotsBild(){const cols=[{key:"spieler",label:"Spieler",width:400},{key:"nr",label:"Nr.",width:120},{key:"oberteil",label:"Oberteil",width:240},{key:"hose",label:"Hose",width:240}],src=[{key:"oberteil",sel:".o"},{key:"hose",sel:".h"}],feld=getRows(src,isFieldRow),tw=getRows(src,isTwRow);exportTableImage({title:"TRIKOT-BESTELLLISTE",filePrefix:"Trikot-Bestellliste",shareTitle:"Trikot-Bestellliste",columns:cols,sections:[{title:"FELDSPIELER",rows:feld,summaries:[countText(feld,"oberteil","Oberteil"),countText(feld,"hose","Hose")]},{title:"TORHÜTER",rows:tw,summaries:[countText(tw,"oberteil","Oberteil"),countText(tw,"hose","Hose")] }]})}
+function exportTrikotsBild(){const cols=[{key:"spieler",label:"Spieler",width:400},{key:"nr",label:"Nr.",width:120},{key:"oberteil",label:"Oberteil",width:240},{key:"hose",label:"Hose",width:240}],src=[{key:"oberteil",sel:".o"},{key:"hose",sel:".h"}],feld=getRows(src,isFieldRow),tw=getRows(src,isTwRow);exportTableImage({title:"TRIKOT-BESTELLLISTE",filePrefix:"Trikot-Bestellliste",shareTitle:"Trikot-Bestellliste",columns:cols,sections:[{title:"FELDSPIELER",rows:feld,summaries:[countText(feld,"oberteil","Oberteil"),countText(feld,"hose","Hose")]},{title:"TORHÜTER",rows:tw,summaries:[countText(tw,"oberteil","Oberteil"),countText(tw,"hose","Hose")]}]})}
 function exportPraesBild(){const cols=[{key:"spieler",label:"Spieler",width:330},{key:"nr",label:"Nr.",width:110},{key:"jacke",label:"Jacke",width:187},{key:"shirt",label:"T-Shirt",width:186},{key:"hose",label:"Hose",width:187}],rows=getRows([{key:"jacke",sel:".j"},{key:"shirt",sel:".t"},{key:"hose",sel:".h2"}]);exportTableImage({title:"PRÄSENTATIONSANZUG",filePrefix:"Praesentationsanzug",shareTitle:"Präsentationsanzug",columns:cols,sections:[{title:"ALLE SPIELER",rows,summaries:[countText(rows,"jacke","Jacke"),countText(rows,"shirt","T-Shirt"),countText(rows,"hose","Hose")]}]})}
 function exportWinterBild(){const cols=[{key:"spieler",label:"Spieler",width:500},{key:"nr",label:"Nr.",width:140},{key:"winter",label:"Winterjacke",width:360}],rows=getRows([{key:"winter",sel:".w"}]);exportTableImage({title:"WINTERJACKEN",filePrefix:"Winterjacken",shareTitle:"Winterjacken",columns:cols,sections:[{title:"ALLE SPIELER",rows,summaries:[countText(rows,"winter","Winterjacke")]}]})}
 build();load();
